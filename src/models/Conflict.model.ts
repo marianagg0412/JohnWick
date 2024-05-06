@@ -1,4 +1,4 @@
-import {Conflicts} from "../interfaces/Conflicts";
+import {Conflicts} from "../interfaces/Conflict";
 import {model, Schema} from "mongoose";
 
 const ConflictSchema = new Schema<Conflicts>({

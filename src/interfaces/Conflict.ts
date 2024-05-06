@@ -1,6 +1,6 @@
 import {User} from "./User";
 
-export interface Conflicts{
+export interface Conflict{
     usersInvolved: User[],
     solution: string,
 }
