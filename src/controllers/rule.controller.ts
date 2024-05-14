@@ -1,47 +1,41 @@
 import {Request,Response} from "express";
 import RuleModel from "../models/Rule.model";
-import {modifyRule} from "../services/rule.service";
+import {CreateRule, GetRuleById, GetRules, getRulesByCreatorId, modifyRule} from "../services/rule.service";
 
-export const CreateRule = async(req: Request, res: Response) => {
-    if(req.user && req.user.role === "AltaMesa"){
-        const { createdBy, description } = req.body;
-        const newRule = new RuleModel({
-            createdBy,
-            description,
-        });
-
+export const CreateRuleController = async (req: Request, res: Response) => {
+    if(req.user && req.user.role === "AltaMesa") {
+        const rule = req.body;
         try {
-            return await newRule.save();
+            const newRule = await CreateRule(rule);
+            res.status(201).send(newRule);
         } catch (error) {
             console.error('Error creating rule:', error);
-            throw error;
+            res.status(500).json({message: 'Error creating rule', error});
         }
-    } else{
-        return res.status(401).json({message: "Unauthorized, only Alta Mesa members can create rules"});
     }
 }
 
-export const GetRules = async(req: Request, res: Response) => {
+export const GetRulesController = async(req: Request, res: Response) => {
     try {
-        return await RuleModel.find();
+        return await GetRules();
     } catch (error) {
         console.error('Error getting rules:', error);
         throw error;
     }
 }
 
-export const GetRuleById = async(req: Request, res: Response) => {
+export const GetRuleByIdController = async(req: Request, res: Response) => {
     try {
-        return await RuleModel.findById(req.params.id);
+        return await GetRuleById(req.params.id);
     }catch(error){
         console.error('Error getting rule by id:', error);
         throw error;
     }
 }
 
-export const getRulesByCreatorId = async(req: Request, res: Response) => {
+export const getRulesByCreatorIdController = async (req: Request, res: Response) => {
     try {
-        return await RuleModel.find({createdBy: req.params.creatorId});
+        return await getRulesByCreatorId(req.params.id);
     }catch(error){
         console.error('Error getting rules by creator id:', error);
         throw error;
