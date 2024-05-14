@@ -34,3 +34,16 @@ export const getMissionByExecutorId = async (executorId: string) => {
         throw error;
     }
 }
+
+export const executeMission = async (missionId: string) => {
+    try {
+        return await MissionModel.findByIdAndUpdate(
+            missionId,
+            { hasBeenExecuted: true },
+            { new: true, runValidators: true }
+        );
+    } catch (error) {
+        console.error('Error executing mission:', error);
+        throw error;
+    }
+}
