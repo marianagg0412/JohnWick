@@ -1,5 +1,4 @@
 import {Request,Response} from "express";
-import RuleModel from "../models/Rule.model";
 import {CreateRule, GetRuleById, GetRules, getRulesByCreatorId, modifyRule} from "../services/rule.service";
 
 export const CreateRuleController = async (req: Request, res: Response) => {

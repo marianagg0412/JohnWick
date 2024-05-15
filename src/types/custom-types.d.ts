@@ -1,5 +1,5 @@
-// custom-types.d.ts
-import { User } from './interfaces/User';  // Adjust the import path as necessary
+// src/types/custom-types.d.ts
+import { User } from '../interfaces/User';  // Adjust the import path as necessary
 
 declare global {
     namespace Express {
