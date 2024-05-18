@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken'
-import {UserRole} from '../interfaces/User'
+import jwt from 'jsonwebtoken';
+import { UserRole } from '../interfaces/User';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret'
+const JWT_SECRET = process.env.JWT_SECRET || 'default_secret';
 
-export const signToken = (id: string, role: UserRole) => {
-    return jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '2h' });
+export const signToken = (username: string, role: UserRole) => {
+    return jwt.sign({ username, role }, JWT_SECRET, { expiresIn: '2h' });
 };
 
 export const verifyToken = (token: string) => {

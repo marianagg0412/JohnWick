@@ -1,32 +1,40 @@
 import {Request, Response} from "express";
-import {executeMission, getMissionByExecutorId, getMissions, registerMission} from "../services/mission.service";
+import {
+    executeMission,
+    getMissionByExecutorUsername,
+    getMissions,
+    registerMission
+} from "../services/mission.service";
 
 export const registerMissionController = async (req: Request, res: Response) => {
     if (req.user && req.user.role === "AltaMesa") {
-        const mission = req.body;
-        try{
-            const newMission = await registerMission(mission);
+        const { executor, description } = req.body;
+        try {
+            const newMission = await registerMission({ executor, description });
             res.status(201).send(newMission);
         } catch (error) {
             console.error('Error registering mission:', error);
             res.status(500).json({ message: 'Error registering mission', error });
         }
+    } else {
+        res.status(403).json({ message: 'Forbidden' });
     }
-}
+};
 
-export const getMissionByExecutorIdController = async (req: Request, res: Response) => {
-    const executorId = req.params.id;
+export const getMissionByExecutorUsernameController = async (req: Request, res: Response) => {
+    const executorUsername = req.params.username;
     try {
-        const missions = await getMissionByExecutorId(executorId);
-        if (!missions) {
+        const missions = await getMissionByExecutorUsername(executorUsername);
+        if (!missions || missions.length === 0) {
             return res.status(404).send({ message: 'Missions not found' });
         }
         res.status(200).send(missions);
     } catch (error) {
-        console.error('Error getting missions by executor id:', error);
-        res.status(500).json({ message: 'Error getting missions by executor id', error });
+        console.error('Error getting missions by executor username:', error);
+        res.status(500).json({ message: 'Error getting missions by executor username', error });
     }
-}
+};
+
 
 export const getMissionsController = async (req: Request, res: Response) => {
     try {

@@ -1,21 +1,30 @@
 import {Mission} from "../interfaces/Mission";
 import MissionModel from "../models/Mission.model";
+import UserModel from "../models/User.model";
 
-export const registerMission = async (mission: Mission) => {
-    const {executor, description} = mission;
-    const newMission = new MissionModel({
-        executor,
-        description,
-        hasBeenExecuted: false
-    });
+export const registerMission = async (mission: { executor: string, description: string }) => {
+    const { executor, description } = mission;
 
     try {
-        return await newMission.save();
+        // Find the executor by username
+        const executorUser = await UserModel.findOne({ username: executor });
+        if (!executorUser) {
+            throw new Error('Executor not found');
+        }
+
+        const newMission: Mission = {
+            executor: executorUser, // Directly add the user object
+            description,
+            hasBeenExecuted: false
+        };
+
+        const missionModel = new MissionModel(newMission);
+        return await missionModel.save();
     } catch (error) {
         console.error('Error registering mission:', error);
         throw error;
     }
-}
+};
 
 export const getMissions = async () => {
     try {
@@ -26,14 +35,20 @@ export const getMissions = async () => {
     }
 }
 
-export const getMissionByExecutorId = async (executorId: string) => {
+export const getMissionByExecutorUsername = async (executorUsername: string) => {
     try {
-        return await MissionModel.find({ executor: executorId }).populate('executor');
+        // Find the executor by username
+        const executor = await UserModel.findOne({ username: executorUsername });
+        if (!executor) {
+            throw new Error('Executor not found');
+        }
+
+        return await MissionModel.find({ executor: executor._id }).populate('executor');
     } catch (error) {
-        console.error('Error getting mission by executor id:', error);
+        console.error('Error getting missions by executor username:', error);
         throw error;
     }
-}
+};
 
 export const executeMission = async (missionId: string) => {
     try {

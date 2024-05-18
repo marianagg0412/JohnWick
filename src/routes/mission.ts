@@ -1,12 +1,17 @@
 import { Router } from "express";
-import { registerMissionController, getMissionByExecutorIdController, getMissionsController, executeMissionController } from "../controllers/mission.controller";
+import {
+    registerMissionController,
+    getMissionsController,
+    executeMissionController,
+    getMissionByExecutorUsernameController
+} from "../controllers/mission.controller";
+import {checkUserRole, verifyTokenMiddleware} from "../middleware/login.middleware";
 
 const router = Router();
 
-// Mission routes
-router.post('/missions', registerMissionController);
-router.get('/missions', getMissionsController);
-router.get('/missions/:id', getMissionByExecutorIdController);
-router.put('/missions/:id', executeMissionController);
+router.post('/register', verifyTokenMiddleware, checkUserRole('AltaMesa'), registerMissionController);
+router.get('/get-missions', getMissionsController);
+router.get('/get-missions/:username', getMissionByExecutorUsernameController);
+router.put('/execute/:id', executeMissionController);
 
 export { router };

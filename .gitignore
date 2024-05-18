@@ -1,6 +1,9 @@
 ### dotenv ###
 .env
 
+##Mongo ##
+/mongo
+
 ### Node ###
 # Logs
 logs

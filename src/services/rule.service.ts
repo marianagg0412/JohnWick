@@ -1,7 +1,9 @@
 import {Rule} from "../interfaces/Rule";
 import RuleModel from "../models/Rule.model";
+import {User} from "../interfaces/User";
+import UserModel from "../models/User.model";
 
-export const CreateRule = async(rule: Rule) => {
+export const CreateRule = async (rule: { createdBy: User, description: string }) => {
     const { createdBy, description } = rule;
     const newRule = new RuleModel({
         createdBy,
@@ -14,7 +16,7 @@ export const CreateRule = async(rule: Rule) => {
         console.error('Error creating rule:', error);
         throw error;
     }
-}
+};
 
 export const GetRules = async() => {
     try {
@@ -34,15 +36,6 @@ export const GetRuleById = async(id: string) => {
     }
 }
 
-export const getRulesByCreatorId = async(creatorId: string) => {
-    try {
-        return await RuleModel.find({createdBy: creatorId});
-    }catch(error){
-        console.error('Error getting rules by creator id:', error);
-        throw error;
-    }
-}
-
 export const modifyRule = async (id: string, rule: Partial<Rule>) => {
     try {
         return await RuleModel.findByIdAndUpdate(
@@ -55,3 +48,16 @@ export const modifyRule = async (id: string, rule: Partial<Rule>) => {
         throw error;
     }
 }
+
+// In your rule.service.ts
+
+export const getRulesByCreatorUsername = async (username: string) => {
+    try {
+        // Populate the createdBy field with the user document
+        return await RuleModel.find().populate('createdBy').where('createdBy.username', username);
+    } catch (error) {
+        console.error('Error getting rules by creator username:', error);
+        throw error;
+    }
+};
+
