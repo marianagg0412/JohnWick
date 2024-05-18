@@ -2,7 +2,7 @@ import {Request,Response} from "express";
 import {
     CreateRule,
     GetRuleById,
-    GetRules, getRulesByCreatorUsername,
+    GetRules, getRulesByCreatorId,
     modifyRule
 } from "../services/rule.service";
 
@@ -64,19 +64,17 @@ export const modifyRuleController = async (req: Request, res: Response) => {
     }
 }
 
-// rule.controller.ts
-
-// In your rule.controller.ts
-
-export const getRulesByCreatorUsernameController = async (req: Request, res: Response) => {
-    const username = req.params.username;
+export const getRulesByCreatorIdController = async (req: Request, res: Response) => {
+    const id = req.params.id;
     try {
-        const rules = await getRulesByCreatorUsername(username);
+        const rules = await getRulesByCreatorId(id);
         res.json(rules);
     } catch (error) {
-        console.error('Error in getRulesByCreatorUsernameController:', error);
+        console.error('Error fetching rules:', error);
         res.status(500).json({ message: 'Error fetching rules', error });
     }
 };
+
+
 
 

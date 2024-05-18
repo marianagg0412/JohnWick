@@ -7,7 +7,7 @@ export const registerConflictController = async (req: Request, res: Response) =>
         const conflict: Conflict = req.body;
         try {
             const newConflict = await registerConflict(conflict);
-            res.status(201).send(newConflict);  // Corrected to send the result of registerConflict
+            res.status(201).send(newConflict);
         } catch (error) {
             console.error('Error registering conflict:', error);
             res.status(500).json({ message: 'Error registering conflict', error });
@@ -43,10 +43,10 @@ export const getConflictByIdController = async (req: Request, res: Response) => 
 
 export const resolveConflictController = async (req: Request, res: Response) => {
     const conflictId = req.params.id;
-    const resolution = req.body.resolution;
+    const solution = req.body.solution;
     if (req.user && req.user.role === "AltaMesa") {
         try {
-            const resolvedConflict = await resolveConflict(conflictId, resolution);
+            const resolvedConflict = await resolveConflict(conflictId, solution);
             if (!resolvedConflict) {
                 return res.status(404).send({ message: 'Conflict not found' });
             }

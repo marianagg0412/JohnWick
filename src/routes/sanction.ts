@@ -4,9 +4,9 @@ import { verifyTokenMiddleware, checkUserRole } from "../middleware/login.middle
 
 const router = Router();
 
-router.post('/sanctions', verifyTokenMiddleware, checkUserRole('AltaMesa'), registerSanctionController);
-router.get('/sanctions', getSanctionsController);
-router.get('/sanctions/:id', getSanctionByIdController);
-router.put('/sanctions/:id', verifyTokenMiddleware, checkUserRole('AltaMesa'), updateSanctionController);
+router.post('/register', verifyTokenMiddleware, checkUserRole('AltaMesa'), registerSanctionController);
+router.get('/get', getSanctionsController);
+router.get('/get/:id', getSanctionByIdController);
+router.put('/update/:id', verifyTokenMiddleware, checkUserRole('AltaMesa'), updateSanctionController);
 
 export { router };

@@ -22,7 +22,12 @@ const UserSchema = new Schema<User>({
         required: function(){
             return this.role === "LiderDeRegion"
         }
-    }
+    },
+    sanctions:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Sanction',
+        required: false
+    }]
 })
 
 const userModel = model('User', UserSchema);

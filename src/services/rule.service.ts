@@ -49,15 +49,17 @@ export const modifyRule = async (id: string, rule: Partial<Rule>) => {
     }
 }
 
-// In your rule.service.ts
-
-export const getRulesByCreatorUsername = async (username: string) => {
+export const getRulesByCreatorId = async (id: string) => {
     try {
-        // Populate the createdBy field with the user document
-        return await RuleModel.find().populate('createdBy').where('createdBy.username', username);
+        const user = await UserModel.findById(id);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return await RuleModel.find({createdBy: user._id}).populate('createdBy');
     } catch (error) {
-        console.error('Error getting rules by creator username:', error);
+        console.error('Error getting rules by creator id:', error);
         throw error;
     }
 };
+
 

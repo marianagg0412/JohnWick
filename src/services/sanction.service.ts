@@ -1,6 +1,7 @@
 import {Sanction} from "../interfaces/Sanction";
 import SanctionModel from "../models/Sanction.model";
 
+
 export const registerSanction = async (sanction: Sanction) => {
     const {causes, typeSanction} = sanction;
     const newSanction = new SanctionModel({

@@ -9,8 +9,8 @@ import {
 const router = Router();
 
 router.post('/register-conflict', verifyTokenMiddleware, checkUserRole('AltaMesa'), registerConflictController);
-router.get('/conflicts', verifyTokenMiddleware, checkUserRole('AltaMesa'), getConflictsController);
-router.get('/conflicts/:id', verifyTokenMiddleware, checkUserRole('AltaMesa'), getConflictByIdController);
+router.get('/get', verifyTokenMiddleware, checkUserRole('AltaMesa'), getConflictsController);
+router.get('/get/:id', verifyTokenMiddleware, checkUserRole('AltaMesa'), getConflictByIdController);
 router.put('/resolve-conflicts/:id', verifyTokenMiddleware, checkUserRole('AltaMesa'), resolveConflictController);
 
 export { router };

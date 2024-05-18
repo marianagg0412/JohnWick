@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUser, loginUserService, getUsers } from "../services/user.service";
+import {registerUser, loginUserService, getUsers, addSanction} from "../services/user.service";
 import { User } from "../interfaces/User";
 
 export const registerUserController = async (req: Request, res: Response) => {
@@ -40,4 +40,14 @@ export const loginUserController = async (req: Request, res: Response) => {
 export const getUserController = async (req: Request, res: Response) => {
     const users = await getUsers();
     return res.status(200).send(users);
+}
+
+export const addSanctionController = async (req: Request, res: Response) => {
+    const { userId, sanctionId } = req.body;
+    try {
+        const user = await addSanction(userId, sanctionId);
+        return res.status(200).send(user);
+    } catch (error) {
+        return res.status(500).send({ message: 'Error adding sanction', error });
+    }
 }
